@@ -125,15 +125,15 @@ export default {
               return 'lightgrey';
             }
             else
-            if(value.count >0 && value.count <3){
+            if(value.count >=1 && value.count <=3){
               return 'orange';
             }
             else
-              if(value.count>=3 && value.count<6){
+              if(value.count>=4 && value.count<=6){
                 return 'darkorange';
               }
             else
-              if(value.count>6 && value.count <=10){
+              if(value.count>=7 && value.count <=10){
                       return 'coral';
               }
            else
