@@ -3,8 +3,11 @@
     <svg :viewBox="getViewBox()" >
         
         <g v-for="week in weeks" :key="week" :transform="getTransformForWeek(week)"  >
-            <Week  :week="week"  :startDate="startDate" :endDate="endDate" :range="range" :values="values" 
-            :getStartDateWithEmptyDays="getStartDateWithEmptyDays" />
+            <Week  :week="week"  :startDate="startDate" :endDate="endDate" :range="range" :values="values" :showchange="showchange"
+            :getStartDateWithEmptyDays="getStartDateWithEmptyDays" 
+            
+
+            />
         </g>
 
         <text v-for="day in DAY_LABELS" :key="day"  x="0" :y="(16 * DAY_LABELS.indexOf(day)) + (DAY_LABELS.indexOf(day)+1)+24"  style="font-size:14px" > {{day}} </text>
@@ -28,7 +31,7 @@ import Week from './Week.vue';
 
 export default {
     name:'HeatMap',
-    props:['startDate','endDate','counts'],
+    props:['startDate','endDate','counts',"showchange"],
     components:{Week},
     data(){
     
@@ -70,7 +73,7 @@ export default {
          
       }
 
-      console.log(values)
+      // console.log(values)
 
 
      const noOfWeeks = this.numberOfWeeks(range);
@@ -81,7 +84,7 @@ export default {
          weeks[i] = i;
      }
 
-     console.log(weeks);
+    //  console.log(weeks);
  
       return{
         values:values,
@@ -94,6 +97,8 @@ export default {
     },
 
     methods:{
+
+     
 
        shiftDate(date, numDays) {
           const newDate = new Date(date);

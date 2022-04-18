@@ -8,6 +8,7 @@
         <rect  v-for="day in filteredDays" :key=" week * 7 + day "  :width="SQUARE_SIZE"  :height="SQUARE_SIZE" :x="(week+2)*16" :y="(day+1)*16" 
                 rx="2" ry="2"
               :fill="handleColor(week*7+day)" 
+              @click="handleClick(week*7+day)"
         >
                  <title>{{ getTitle(week*7+day) }}</title>
 
@@ -21,9 +22,11 @@
 
 import { DAYS_IN_WEEK,MILLISECONDS_IN_ONE_DAY } from "../constants"
 
+
+
 export default {
  name:"Week",
- props:['week',"startDate",'endDate',"range",'values','getStartDateWithEmptyDays'],
+ props:['week',"startDate",'endDate',"range",'values','getStartDateWithEmptyDays','showchange'],
 
  data(){
 
@@ -64,8 +67,50 @@ export default {
 
  methods:{
 
-        handleClick(day,week){
-                console.log(week+' '+day);
+        handleClick(index){
+
+                this.showchange.length=0;
+
+               const count = this.mapobj[index].value.count;
+               const date = this.mapobj[index].value.date;
+
+                let d = date.getDate();
+                let month = date.getMonth()+1;
+                const year = date.getFullYear();
+
+                if(d<=9){
+                        d ='0'+d;
+                }
+
+                if(month<=9){
+                        month = '0'+month;
+                }
+
+                console.log(d+"-"+month+"-"+year);
+
+                const string = d+"-"+month+"-"+year;
+
+               if(count===0){
+                   this.showchange.push('No changes');
+               }
+                else{
+
+                        fetch(`https://changes.free.beeceptor.com/changes/${string}`)
+                        .then(res=> res.json())
+                        .then(data =>{
+                                // console.log(data);
+
+                                data.map((item) =>{
+
+                                        this.showchange.push(item.description);
+                                })
+                                
+                                // console.log(this.showchange)
+                        })
+                        
+                }
+               
+                
         },
 
         handleColor(index){
